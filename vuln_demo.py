@@ -1,6 +1,10 @@
 import sqlite3
 import sys
 
+password = "SuperSecret123"  # Hardcoded secret
+print(password)
+
+
 def get_user_data(username):
     conn = sqlite3.connect('users.db')
     cursor = conn.cursor()
