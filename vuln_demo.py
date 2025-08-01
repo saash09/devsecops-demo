@@ -2,7 +2,10 @@ import sqlite3
 import sys
 
 password = "SuperSecret123"  # Hardcoded secret
-print(password)
+print(passwordi)
+# vuln_test.py
+eval(input("Enter code: "))  # Insecure: triggers CodeQL
+
 
 
 
