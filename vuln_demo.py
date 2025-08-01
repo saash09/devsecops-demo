@@ -3,8 +3,6 @@ import sys
 
 password = "SuperSecret123"  # Hardcoded secret
 print(password)
-# vuln_test.py
-eval(input("Enter code: "))  # Insecure: triggers CodeQL
 
 
 
