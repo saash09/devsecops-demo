@@ -1,0 +1,35 @@
+name: SonarCloud
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build and analyze on SonarCloud
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Install Java if scanning Java or mixed languages (SonarCloud requires JDK)
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: 'temurin'
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@v2
+        with:
+          args: >
+            -Dsonar.projectKey=saash09_DevSecOpsDemo
+            -Dsonar.organization=saash09
+            -Dsonar.host.url=https://sonarcloud.io
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
