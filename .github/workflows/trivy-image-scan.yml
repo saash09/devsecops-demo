@@ -1,18 +1,16 @@
 name: Trivy Image Scan
 
 on:
-  workflow_dispatch:  # Manual trigger (you can change to push/PR later)
+  workflow_dispatch:  # Manual trigger
 
 jobs:
   trivy-image-scan:
     runs-on: ubuntu-latest
 
     steps:
-    # Step 1: Checkout code (not strictly needed for image scan, but good practice)
     - name: Checkout code
       uses: actions/checkout@v3
 
-    # Step 2: Install Trivy
     - name: Install Trivy
       run: |
         sudo apt-get update
@@ -22,17 +20,14 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y trivy
 
-    # Step 3: Pull Juice Shop image
     - name: Pull Juice Shop Docker image
       run: docker pull bkimminich/juice-shop
 
-    # Step 4: Scan Docker image with Trivy
     - name: Trivy scan Juice Shop image
       run: trivy image --severity CRITICAL,HIGH --format table --output trivy-image-report.txt bkimminich/juice-shop
 
-    # Step 5: Upload scan report
     - name: Upload Trivy report
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4   # <-- Updated to v4
       with:
         name: trivy-image-report
         path: trivy-image-report.txt
