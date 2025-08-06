@@ -1,34 +1,38 @@
 name: Trivy Image Scan
 
 on:
-  workflow_dispatch:  # Manual trigger
+  workflow_dispatch:
 
 jobs:
   trivy-image-scan:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      # Step 1: Checkout repository
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Install Trivy
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y wget apt-transport-https gnupg lsb-release
-        wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
-        echo deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main | sudo tee /etc/apt/sources.list.d/trivy.list
-        sudo apt-get update
-        sudo apt-get install -y trivy
+      # Step 2: Install Trivy
+      - name: Install Trivy
+        run: |
+          sudo apt-get update
+          sudo apt-get install wget -y
+          wget https://github.com/aquasecurity/trivy/releases/latest/download/trivy_Linux-64bit.deb
+          sudo dpkg -i trivy_Linux-64bit.deb
 
-    - name: Pull Juice Shop Docker image
-      run: docker pull bkimminich/juice-shop
+      # Step 3: Pull Juice Shop Docker image
+      - name: Pull Juice Shop Docker image
+        run: docker pull bkimminich/juice-shop:latest
 
-    - name: Trivy scan Juice Shop image
-      run: trivy image --severity CRITICAL,HIGH --format table --output trivy-image-report.txt bkimminich/juice-shop
+      # Step 4: Scan Docker image and save output
+      - name: Scan Docker Image with Trivy
+        run: |
+          trivy image --severity HIGH,CRITICAL --format table bkimminich/juice-shop:latest | tee trivy-report.txt
 
-    - name: Upload Trivy report
-      uses: actions/upload-artifact@v4   # <-- Updated to v4
-      with:
-        name: trivy-image-report
-        path: trivy-image-report.txt
+      # Step 5: Upload Trivy report as artifact (fixed v4)
+      - name: Upload Trivy Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: trivy-report
+          path: trivy-report.txt
 
