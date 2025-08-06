@@ -1,0 +1,21 @@
+WELCOME TO THE VI EDITOR TEST FILE.
+This file is meant for practicing various VI editor commands.
+You can REPEAT commands, search for TEXT, and perform substitutions.
+
+The quick brown fox jumps over the lazy DOG.
+The QUICK brown FOX jumps over the lazy dog.
+The quick BROWN fox jumps OVER the LAZY dog.
+
+REPEAT. REPEAT. REPEAT.
+CAPSLOCK CAPSLOCK CapsLOCK.AKSHATHA
+
+
+Line one: Editing starts here.
+Line two: Try deleting this line.
+Line three: COPY this line to another location.
+
+Line four: Insert text below or above.
+Line five: SUBSTITUTE words and phrases.
+
+END OF FILE. HAPPY EDITING!
+
